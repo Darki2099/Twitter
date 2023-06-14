@@ -1,0 +1,155 @@
+CREATE DATABASE Enrrollments
+
+CREATE TABLE Career(
+    id int(10) not null auto_increment primary key,
+    descripcion varchar(128) not null);
+
+
+CREATE TABLE Subject(
+    id int(10) not null auto_increment primary key,
+    descripcion varchar(128) not null,
+    career_id int,
+    FOREIGN KEY (career_id) REFERENCES Career(id));
+
+CREATE TABLE Users(
+    id int PRIMARY KEY,
+    username VARCHAR(128),
+    password VARCHAR(32),
+    type INT NOT NULL CHECK(type= 0 and 1 and 2),
+    career_id int,
+    status INT NOT NULL CHECK(status= 0 and 1),
+    FOREIGN KEY (career_id) REFERENCES Career(id),
+    UNIQUE (username));
+
+INSERT INTO `career`( `descripcion`) VALUES ("Esta licenciatura está orientada a la creación y mantenimiento de software de aplicación")
+INSERT INTO `career`( `descripcion`) VALUES ("Es una disciplina en la cual se organizan, planifican, dirigen y controlan los recursos que una entidad posee")
+
+INSERT INTO `subject`( `descripcion`, `career_id`) VALUES ("Son colecciones de datos de cualquier tipo y almacenados sistemáticamente para su uso posterior",1)
+INSERT INTO `subject`(`descripcion`, `career_id`) VALUES ("Pretende dar una visión global de las tecnologías y tendencias actuales para el desarrollo software basado en Internet",1)
+INSERT INTO `subject`(`descripcion`, `career_id`) VALUES ("Estudia los distintos tipos de redes, la topología de una red y el funcionamiento interno del modelo de transmisión TCP/IP",1)
+
+INSERT INTO `subject`(`descripcion`, `career_id`) VALUES ("Consiste en la recopilación, el registro y la interpretación continuos y sistemáticos de información determinada",2)
+INSERT INTO `subject`(`descripcion`, `career_id`) VALUES ("Es una proyección expresada en términos cuantitativos de lo que se quiere lograr en la empresa a nivel operativo y financiero",2)
+INSERT INTO `subject`(`descripcion`, `career_id`) VALUES ("Proceso social y administrativo mediante el cual, grupos e individuos obtienen lo que necesitan y desean",2)
+
+INSERT INTO `users`(`id`, `username`, `password`, `type`, `career_id`, `status`) VALUES (1, "DarkSlayer2099", "MadreMiaWilly", 0, 1, 1)
+INSERT INTO `users`(`id`, `username`, `password`, `type`, `career_id`, `status`) VALUES (2, "RoninMaster", "MagicPro", 0, 2, 1)
+INSERT INTO `users`(`id`, `username`, `password`, `type`, `career_id`, `status`) VALUES (3, "Maistro", "Bugs", 4, 2, 3)
+
+------Prepared statement Career------
+public boolean insertar(Object obj) {
+		Careeer car= (Career)obj;
+		try {
+			String Sinser = "INSERT INTO Career(id,descripcion) values(?,?)";
+			PreparedStatement insert = this.myConexion.prepareStatement(Sinser);
+			insert.setInt(1, car.id);
+			insert.setString(2, car.descripcion);
+			insert.execute();
+		} catch (SQLException ex) {}
+		return true;
+	}
+
+public boolean buscar(Object obj) {
+		Career car= (Career)obj;
+		
+		try {
+			String  Sbus ="SELECT * FROM Career WHERE id = ?";
+			PreparedStatement busca = this.myConexion.prepareStatement(Sbus);
+			busca.setInt(1, car.id);
+
+			rs = busca.executeQuery();
+			
+			if (rs.next()) {
+				car.setdescripcion(rs.getString("descripcion"));
+				return true;
+			}
+		} catch (SQLException ex) {
+		}
+		return true;
+	}
+
+public boolean eliminar(Object obj) {
+		Career car = (Career)obj;
+		try {
+			Statement stat = this.myConexion.createStatement();
+			String Seli ="DELETE FROM Career WHERE id= '" + car.id + "'";
+			stat.executeUpdate(Seli);
+		} catch (SQLException e) {
+		}
+		return true;
+	}
+
+public boolean actualizar(Object obj) {
+		Career car= (Career)obj;
+		
+		try {
+			String Sactu = "UPDATE Career SET descripcion = '"+ car.descripcion+ "' WHERE id + car.id;
+			PreparedStatement modif = this.myConexion.prepareStatement(Sactu);
+			modif.executeUpdate();
+		} catch (SQLException ex) {
+		}
+		return true;
+	}
+
+------Prepared statement Subject------
+public boolean insertar(Object obj) {
+		Subject sub= (Subject)obj;
+		try {
+			String Sinser ="INSERT INTO Subject(id, descripcion, career_id) values(?,?,?)";
+			PreparedStatement insert = this.myConexion.prepareStatement(Sinser);
+			insert.setInt(1, sub.id);
+			insert.setString(2, sub.descripcion);
+			insert.setInt(3, sub.career_id);
+			insert.execute();
+		} catch (SQLException ex) {}
+		return true;
+	}
+public boolean buscar(Object obj) {
+		Subject sub= (Subject)obj;
+		
+		try {
+			String  Sbus ="SELECT * FROM Subject WHERE id = ?";
+			PreparedStatement busca = this.myConexion.prepareStatement(Sbus);
+			busca.setInt(1, car.id);
+
+			rs = busca.executeQuery();
+			
+			if (rs.next()) {
+				car.setdescripcion(rs.getString("descripcion"));
+				return true;
+			}
+		} catch (SQLException ex) {
+		}
+		return true;
+	}
+public boolean eliminar(Object obj) {
+		Subject sub = (Subject)obj;
+		try {
+			Statement stat = this.myConexion.createStatement();
+			String Seli =""DELETE FROM Subject WHERE id= '" + sub.id + "'";
+			stat.executeUpdate(Seli);
+		} catch (SQLException e) {
+		}
+		return true;
+	}
+
+public boolean actualizar(Object obj) {
+		Subject sub= (Subject)obj;
+		
+		try {
+			String Sactu ="UPDATE Subject SET descripcion = '"+ sub.descripcion+ "' WHERE id + car.id;
+			PreparedStatement modif = this.myConexion.prepareStatement(Sactu);
+			modif.executeUpdate();
+		} catch (SQLException ex) {
+		}
+		return true;
+	}
+
+
+------Prepared statement User------
+public boolean insertar(Object obj) {
+		Users user= (Users)obj;
+		try {
+			String Sinser ="INSERT INTO Users(id, username, password, type,  career_id,status ) values(?,?,?,?,?,?)";
+"SELECT * FROM Users WHERE id = ?";
+"DELETE FROM User WHERE id= '" + user.id + "'";
